@@ -1,0 +1,88 @@
+<% layout("/layouts/boilerplate") -%>
+<div class="container mt-2 mb-5">
+    <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto">
+            
+            <h3 class="text-center mb-3">
+                <u><i>Details of : <%= listings.title %></i></u>
+            </h3>
+            <div class="card shadow-sm">
+                <img
+                    src="<%= listings.image.url %>"
+                    class="card-img-top"
+                    alt="Listing Image"
+                    style="height:220px; object-fit:cover;">
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong><%= listings.title %></strong><br>
+                        <%= listings.description %><br>
+                        &#8377;
+                        <%= listings.price.toLocaleString("en-IN") %><br>
+                        <%= listings.location %><br>
+                        <%= listings.country %>
+                    </p>
+                    <% if(currUser && currUser._id.equals(listings.owner)) { %>
+                    <div class="d-flex gap-2 mt-3">
+                        <form
+                            method="GET"
+                            action="/listings/<%= listings._id %>/edit">
+                            <button class="btn btn-dark">
+                                Edit
+                            </button>
+                        </form>
+                        <form
+                            method="POST"
+                            action="/listings/<%= listings._id %>?_method=DELETE">
+                            <button class="btn btn-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            
+            <hr class="my-4">
+            <h4 class="mb-3">
+                Leave a Review
+            </h4>
+            <form action="/listings/<%=listings._id %>/reviews" method="POST">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">
+                        Rating
+                    </label>
+                    <select
+                        name="review[rating]"
+                        id="rating"
+                        class="form-select">
+                        <option selected disabled>
+                            Select Rating
+                        </option>
+                        <option value="1">1 ⭐</option>
+                        <option value="2">2 ⭐⭐</option>
+                        <option value="3">3 ⭐⭐⭐</option>
+                        <option value="4">4 ⭐⭐⭐⭐</option>
+                        <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">
+                        Comment
+                    </label>
+                    <textarea
+                        name="review[comment]"
+                        id="comment"
+                        class="form-control"
+                        rows="5"
+                        placeholder="Write your review here..."></textarea>
+                </div>
+                <button class="btn btn-dark">
+                    Submit Review
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
