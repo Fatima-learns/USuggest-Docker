@@ -1,8 +1,8 @@
-# Stayfinder — Dockerized Web Application
+# USuggest — Dockerized Web Application 🐳
 
-Stayfinder is a Node.js web application built with Express, EJS, and MongoDB Atlas. This repository contains the application source code and Docker configuration needed to run it in a container.
+USuggest is a Node.js web application built with Express.js, EJS, and MongoDB Atlas. This repository demonstrates how to containerize the application with Docker and run it from a published Docker image.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - Node.js
 - Express.js
@@ -10,63 +10,97 @@ Stayfinder is a Node.js web application built with Express, EJS, and MongoDB Atl
 - MongoDB Atlas
 - Docker
 
+## 🐳 Docker Hub Image
+
+The prebuilt image is available on Docker Hub:
+
+**[Pull USuggest from Docker Hub](https://hub.docker.com/r/shayreen/usuggest)**
+
+Image name: `shayreen/usuggest:latest`
+
 ## Prerequisites
 
-- Docker Desktop (Windows/macOS) or Docker Engine (Linux)
+- Docker Desktop on Windows or macOS, or Docker Engine on Linux
 - A MongoDB Atlas connection string
-- Required environment variables for the application
+- Your required Cloudinary credentials
+- A session secret for the application
 
-## Run with Docker
+## 🚀 Run USuggest with Docker
 
-### 1. Clone the repository
+### 1. Pull the image
+
+Download the published image:
 
 ```bash
-git clone YOUR_NEW_REPOSITORY_URL
-cd YOUR_REPOSITORY_FOLDER
+docker pull shayreen/usuggest:latest
 ```
-
-Replace the placeholders with your new GitHub repository URL and folder name.
 
 ### 2. Configure environment variables
 
-Create a `.env` file in the project root. Add the environment variables required by the application, including your MongoDB Atlas connection string.
+Create a file named `.env` in your working directory and add your own valid credentials:
 
-**Never commit your real `.env` file or publish credentials.**
-
-### 3. Build the Docker image
-
-```bash
-docker build -t stayfinder:latest .
+```dotenv
+ATLAS_URL=your_mongodb_atlas_connection_string
+SESSION_SECRET=your_session_secret
+CLOUD_API_KEY=your_cloudinary_api_key
+CLOUD_API_SECRET=your_cloudinary_api_secret
 ```
 
-### 4. Run the container
+Replace these placeholders with your own values. Check the application source code for any additional required environment variables.
+
+**Security:** Never commit your real `.env` file to GitHub or include credentials in a public image.
+
+### 3. Run the container
+
+Make sure port `8080` is available on your computer, then run:
 
 ```bash
-docker run --name stayfinder-container -p 8080:8080 --env-file .env stayfinder:latest
+docker run --name usuggest-container -p 8080:8080 --env-file .env shayreen/usuggest:latest
 ```
 
-Open [http://localhost:8080](http://localhost:8080) in your browser.
+### 4. Open the application
+
+Visit:
+
+[http://localhost:8080](http://localhost:8080)
+
+The application needs valid environment variables and access to the configured external services to work correctly.
 
 ### 5. Stop the container
 
-Press `Ctrl + C` if running in the foreground. If running in detached mode, use:
+If the container is running in the foreground, press `Ctrl + C`.
+
+If it is running in detached mode, stop it with:
 
 ```bash
-docker stop stayfinder-container
+docker stop usuggest-container
 ```
 
-## Docker Configuration
+### 6. Remove the container (optional)
 
-- `Dockerfile` — defines how the application image is built.
-- `.dockerignore` — excludes unnecessary files and secrets from the build context.
-- `.gitignore` — prevents local dependencies and environment files from being committed.
+After stopping it, remove the container with:
 
-## Notes
+```bash
+docker rm usuggest-container
+```
 
-- The application connects to MongoDB Atlas, so a separate MongoDB container is not required.
-- Ensure your MongoDB Atlas network access settings permit connections from the environment where the application runs.
-- This repository is intended to demonstrate containerization of a Node.js web application.
+Removing the container does not remove the published image from Docker Hub.
 
-## License
+## 📂 Repository Structure
 
-Add a license if you intend to distribute this project under specific open-source terms.
+- `Dockerfile` — instructions for building the application image.
+- `.dockerignore` — excludes unnecessary files from the Docker build context.
+- `.gitignore` — excludes local dependencies and environment files from Git.
+- `app.js` — application entry point.
+- `routes/`, `models/`, `views/`, `public/` — application code and assets.
+
+## 📝 Notes
+
+- USuggest connects to MongoDB Atlas; a separate MongoDB container is not required.
+- Configure MongoDB Atlas network access so the environment running the container can connect.
+- Keep your credentials private and use your own environment variables.
+- The image published on Docker Hub currently targets `linux/amd64`.
+
+## 📄 License
+
+No open-source license has been specified yet. Add a license only if you have the right to distribute the project under the chosen terms.
